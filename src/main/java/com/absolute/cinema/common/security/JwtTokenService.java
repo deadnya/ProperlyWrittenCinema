@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
@@ -96,6 +97,7 @@ public class JwtTokenService {
     }
 
     @Scheduled(fixedRateString = "${jwt.expired-tokens-cleanup-ms}")
+    @Transactional
     public void cleanupExpiredTokens() {
         tokenRepository.deleteByExpirationDateBefore(Instant.now());
     }
